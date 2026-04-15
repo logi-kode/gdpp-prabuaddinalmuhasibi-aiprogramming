@@ -23,6 +23,10 @@ public class Enemy : MonoBehaviour
     [HideInInspector]
     public Animator Animator;
 
+    public void Dead()
+    {
+        Destroy(gameObject);
+    }
     public void SwitchState(BaseState state)
     {
         _currentState.ExitState(this);
@@ -66,4 +70,13 @@ public class Enemy : MonoBehaviour
         SwitchState(PatrolState);
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(_currentState != RetreatState)
+        {
+            if (collision.gameObject.CompareTag("Player")){ 
+                collision.gameObject.GetComponent<Player>().Dead();
+            }
+        }
+    }
 }
